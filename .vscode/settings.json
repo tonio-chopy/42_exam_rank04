@@ -1,7 +1,10 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "compare": "c",
+        "type_traits": "c",
+        "string.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
