@@ -6,7 +6,7 @@
 /*   By: lsilva-x <lsilva-x@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 18:37:42 by lsilva-x          #+#    #+#             */
-/*   Updated: 2025/07/24 18:46:28 by lsilva-x         ###   ########.fr       */
+/*   Updated: 2025/07/28 16:46:48 by lsilva-x         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <ctype.h> //isdigit
 #include <unistd.h> //write
 #include <stdbool.h>
+#include <stdlib.h>
 
 /*
 ------------------FT_ARGO-------------
@@ -28,6 +29,34 @@
 from a file stream
 */
 
-int	argo(json *dst, FILE *stream);
+typedef struct	json {
+	enum {
+		MAP,
+		INTEGER,
+		STRING
+	} type;
+	union {
+		struct {
+			struct pair	*data;
+			size_t		size;
+		} map;
+		int		integer;
+		char	*string;
+	};
+}	json;
+
+typedef struct	pair {
+	char	*key;
+	json	value;
+}	pair;
+
+int		argo(json *dst, FILE *stream);
+
+void	free_json(json j);
+int		peek(FILE *stream);
+void	unexpected(FILE *stream);
+int		accept(FILE *stream, char c);
+int		expect(FILE *stream, char c);
+void	serialize(json j);
 
 #endif
