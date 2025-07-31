@@ -1,60 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main2.c                                            :+:      :+:    :+:   */
+/*   ft_popen.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lsilva-x <lsilva-x@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/21 16:31:30 by lsilva-x          #+#    #+#             */
-/*   Updated: 2025/07/30 17:20:49 by lsilva-x         ###   ########.fr       */
+/*   Created: 2025/07/29 15:53:54 by lsilva-x          #+#    #+#             */
+/*   Updated: 2025/07/29 16:10:42 by lsilva-x         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h> // pipe, fork. dup2, execvp, close
-#include <stdlib.h> // exit
+#include <unistd.h>
+#include <stdlib.h>
 
 int ft_popen(const char *file, char *const argv[], char type);
+
+
+static void	close_fd(int fd[2])
+{
+	close(fd[0]);
+	close(fd[1]);
+}
 
 int ft_popen(const char *file, char *const argv[], char type)
 {
 	int		fd[2];
 	int		pid;
-
+	
 	if (!file || !argv || (type != 'r' && type != 'w'))
 		return (-1);
 	if (pipe(fd) == -1)
 		return (-1);
 	pid = fork();
 	if (pid == -1)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		return (-1);
-	}
+		return (close_fd(fd), -1);
 	if (pid == 0)
 	{
 		if (type == 'r')
 		{
-			if(dup2(fd[1], STDOUT_FILENO) == -1)
+			close(fd[0]);
+			if (dup2(fd[1], STDOUT_FILENO) == -1)
 			{
-				close(fd[0]);
 				close(fd[1]);
-				return (-1);
+				exit (-1);
 			}
+			close(fd[1]);
 		}
 		else
 		{
-			if(dup2(fd[0], STDIN_FILENO) == -1)
+			close(fd[1]);
+			if (dup2(fd[0], STDIN_FILENO) == -1)
 			{
 				close(fd[0]);
-				close(fd[1]);
-				return (-1);
+				exit (-1);
 			}
+			close(fd[0]);
 		}
-		close(fd[0]);
-		close(fd[1]);
 		execvp(file, argv);
-		exit(-1);
+		exit (-1);
 	}
 	if (type == 'r')
 	{
@@ -66,21 +69,26 @@ int ft_popen(const char *file, char *const argv[], char type)
 		close(fd[0]);
 		return (fd[1]);
 	}
+	return (-1);
 }
 
-# define BUFFER_SIZE 100
 #include <stdio.h>
 
-int	main() {
-	int	fd = ft_popen("ls", (char *const []){"ls", NULL}, 'r');
-	dup2(fd, 0);
-	fd = ft_popen("grep", (char *const []){"grep", "c", NULL}, 'r');
-	char	line[BUFFER_SIZE];
+int main()
+{
+    int  fd;
+    char line[9999];
 	int		b_read;
-	while ((b_read = read(fd, line, BUFFER_SIZE)) != 0)
+
+    fd = ft_popen("ls", (char *const []){"ls", NULL}, 'r');
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	fd = ft_popen("wc", (char *const []){"wc", "-l", NULL}, 'w');
+    while (b_read = read(0, line, 9999))
 	{
 		line[b_read] = '\0';
-		printf("%s", line);
+		write(fd, line, b_read);
 	}
 	close(fd);
+    return (0);
 }
