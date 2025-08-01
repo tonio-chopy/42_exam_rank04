@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug (make)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/minishell",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+				{
+					"description": "Seguir o processo pai",
+					"text": "set follow-fork-mode parent",
+					"ignoreFailures": true
+				}
+			],
+            "miDebuggerPath": "/usr/bin/gdb",
+            "preLaunchTask": "build",
+            "miDebuggerArgs": "",
+            "logging": {
+                "moduleLoad": false,
+                "trace": false,
+                "engineLogging": false
+            }
+        }
+    ]
+}

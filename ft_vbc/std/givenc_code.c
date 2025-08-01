@@ -6,7 +6,7 @@
 /*   By: lsilva-x <lsilva-x@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 18:11:38 by lsilva-x          #+#    #+#             */
-/*   Updated: 2025/07/29 18:11:48 by lsilva-x         ###   ########.fr       */
+/*   Updated: 2025/07/31 21:34:02 by lsilva-x         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ typedef struct node {
     struct node *l;
     struct node *r;
 }   node;
-
-node *n(**s);
 
 node    *new_node(node n)
 {
