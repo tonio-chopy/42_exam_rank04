@@ -6,7 +6,7 @@
 /*   By: lsilva-x <lsilva-x@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:49:01 by lsilva-x          #+#    #+#             */
-/*   Updated: 2025/07/28 20:18:48 by lsilva-x         ###   ########.fr       */
+/*   Updated: 2025/08/04 17:18:46 by lsilva-x         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct	pair {
 
 void	free_json(json j);
 int		argo(json *dst, FILE *stream);
-
 
 int	peek(FILE *stream)
 {
